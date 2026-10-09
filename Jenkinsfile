@@ -1,27 +1,34 @@
-
 pipeline {
     agent any
 
+    tools {
+        jdk 'JAVA-17'
+    }
+
     stages {
-        stage('Welcome') {
+        stage('Verify Java') {
             steps {
-                echo 'Hello from my first Jenkins Pipeline!'
-                echo 'This is my first practical'
+                bat 'java -version'
+                bat 'javac -version'
+                bat 'echo JAVA_HOME=%JAVA_HOME%'
             }
         }
 
-        stage('Check Environment') {
+        stage('Build') {
             steps {
-                bat 'echo Jenkins is running on Windows'
-                bat 'whoami'
-            }
-        }
-
-        stage('Finish') {
-            steps {
-                echo 'Pipeline completed successfully!'
+                echo 'Java is ready for the build!'
             }
         }
     }
+
+    post {
+        success {
+            echo 'JDK setup and verification successful!'
+        }
+        failure {
+            echo 'JDK setup or verification failed.'
+        }
+    }
 }
+
 
